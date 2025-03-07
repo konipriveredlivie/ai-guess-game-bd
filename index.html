@@ -11,7 +11,7 @@
         .button-primary { background-color: #007bff; color: white; }
         .button-outline { background-color: white; border: 1px solid #007bff; color: #007bff; }
         .selected { background-color: #0056b3; color: white; }
-        .confetti { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: auto; }d
+        .confetti { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: auto; }
         .reaction-gif { display: none; position: absolute; width: 200px; height: auto; }
         #wrongGif { top: 10px; left: 50%; transform: translateX(-50%); }
         #rightGif { top: 50%; right: 10px; transform: translateY(-50%); }
@@ -23,9 +23,9 @@
     <div id="responses"></div>
     <button id="checkBtn" class="button button-primary" onclick="showAnswers()">Check Answers</button>
     <div id="answers" style="display:none;"></div>
-    <img id="confetti" class="confetti" src="/mnt/data/image.png" alt="Confetti">
-    <img id="wrongGif" class="reaction-gif" src="/mnt/data/9mlpns.gif" alt="Wrong Answer Reaction">
-    <img id="rightGif" class="reaction-gif" src="/mnt/data/MicrosoftTeams-video.gif" alt="Correct Answer Reaction">
+    <img id="confetti" class="confetti" src="https://raw.githubusercontent.com/YOUR-GITHUB-USERNAME/YOUR-REPO/main/assets/confetti.gif" alt="Confetti">
+    <img id="wrongGif" class="reaction-gif" src="https://raw.githubusercontent.com/YOUR-GITHUB-USERNAME/YOUR-REPO/main/assets/wrong-answer.gif" alt="Wrong Answer Reaction">
+    <img id="rightGif" class="reaction-gif" src="https://raw.githubusercontent.com/YOUR-GITHUB-USERNAME/YOUR-REPO/main/assets/right-answer.gif" alt="Correct Answer Reaction">
 
     <script>
         const AI_RESPONSES = {
@@ -38,11 +38,6 @@
                 "May your happiness be as optimized as a high-performance algorithm! Enjoy a birthday filled with knowledge and adventure!",
                 "Happy Birthday! May your lifelong dataset grow richer, and your outputs always be extraordinary!",
                 "Another year, another training cycle—hope your birthday is full of new insights and joyful breakthroughs!"
-            ],
-            "GPT-4-turbo mini": [
-                "Wishing you a day filled with laughter, learning, and perfectly crafted prompts!",
-                "Another birthday? Consider it another parameter fine-tuned for greatness! Enjoy the day!",
-                "May your birthday be as exciting as a newly trained AI reaching state-of-the-art performance!"
             ]
         };
 
@@ -81,16 +76,6 @@
                 responsesDiv.appendChild(card);
             });
             document.getElementById("answers").style.display = "none";
-        }
-
-        function highlightSelection(card, choice) {
-            let buttons = card.getElementsByTagName("button");
-            for (let btn of buttons) {
-                btn.classList.remove("selected");
-                if (btn.innerText === choice) {
-                    btn.classList.add("selected");
-                }
-            }
         }
 
         function showAnswers() {
