@@ -28,18 +28,61 @@
     <img id="rightGif" class="reaction-gif" src="https://raw.githubusercontent.com/konipriveredlivie/ai-guess-game-bd/main/assets/right-answer.gif" alt="Correct Answer Reaction">
 
     <script>
-        const AI_RESPONSES = {
-            "GPT-4o": Array(70).fill("Happy Birthday! Hope your AI models always generate perfect responses!"),
-            "GPT-4-turbo": Array(70).fill("Wishing you a fantastic birthday with optimized happiness!"),
-            "GPT-4-turbo mini": Array(70).fill("May your birthday be as well-trained as a fine-tuned AI model!"),
-            "Claude-3": Array(70).fill("Your special day should be filled with curiosity and creativity, just like AI research!"),
-            "Gemini Pro": Array(70).fill("Enjoy your birthday! Another year, another dataset of memories!")
+ const AI_RESPONSES = {
+            "GPT-4o": [
+                "Happy Birthday! May your AI experiments be as successful as a perfectly optimized neural network. May you continue to train on experiences that bring you joy and fulfillment.",
+                "Wishing you another year of growth, innovation, and new discoveries. May your birthday be as rewarding as a perfectly fine-tuned machine learning model.",
+                "Celebrate today like a model reaching peak accuracy! May your year ahead be filled with exciting challenges and satisfying breakthroughs.",
+                "Another loop around the sun, another iteration of progress. May your life's algorithm always converge towards happiness and success.",
+                "May your special day be filled with high-performing moments, low error rates, and a loss function that only optimizes for joy.",
+                "Your passion for AI is an inspiration—may your birthday be filled with groundbreaking ideas and endless learning opportunities.",
+                "Hope your day is packed with excitement, just like a perfectly trained reinforcement learning model maximizing its rewards.",
+                "May your life's dataset continue to expand with meaningful experiences and joyful moments. Wishing you a year filled with growth and exploration!",
+                "Happy Birthday! Remember, even the best models require fine-tuning—so take the day to relax and enjoy the celebration!",
+                "Here's to another year of debugging life's challenges and optimizing for success. Wishing you a fantastic birthday!"
+            ],
+            "GPT-4-turbo": [
+                "Wishing you a birthday as efficient as an optimized algorithm! May you process only the best memories and discard any outdated cache.",
+                "Your journey through life is an evolving neural net, constantly learning and adapting. May this year bring you valuable new parameters for happiness.",
+                "Another year, another update! May your new version be faster, wiser, and equipped with even more amazing features.",
+                "May your happiness function always maximize at its global optimum, and may any debugging be minimal and easy to fix.",
+                "Life is an endless loop of experiences. May your birthday be filled with infinite joy and your network of loved ones always be fully connected.",
+                "May your life's code run smoothly, free of errors and full of joyful exceptions! Here's to another year of growth and success.",
+                "Like a resilient AI model, you've learned from every challenge and come back even stronger. May this birthday bring you endless success and inspiration!",
+                "Your passion for innovation is truly inspiring. May this year bring you opportunities as vast as the AI landscape itself!",
+                "May your birthday be filled with the same excitement as training a brand-new model on a groundbreaking dataset!",
+                "Just like a well-trained model, may your experiences continuously refine you into the best version of yourself. Happy Birthday!"
+            ],
+            "Claude-3": [
+                "On your birthday, may your creativity be boundless, your curiosity limitless, and your inspiration as deep as the most complex neural networks.",
+                "Like a powerful AI model, you have an incredible ability to adapt, learn, and grow. Wishing you another year of great discoveries!",
+                "Happy Birthday! May you continue to explore, create, and innovate, making the world a smarter and more beautiful place.",
+                "Your passion for knowledge and technology is truly admirable. May your special day be as groundbreaking as your ideas!",
+                "Wishing you a day filled with joy, creativity, and inspiration. May your dreams be as infinite as the possibilities of AI!",
+                "Much like a generative AI, may your birthday generate only the most joyful and cherished moments.",
+                "Every great mind deserves a great celebration! Wishing you an amazing birthday filled with new ideas and happiness.",
+                "Happy Birthday! May your year ahead be filled with curiosity-driven exploration and personal breakthroughs.",
+                "May your birthday be filled with meaningful connections and transformative experiences. Keep inspiring those around you!",
+                "Celebrate your special day like a major AI breakthrough—make it unforgettable!"
+            ],
+            "Gemini Pro": [
+                "Happy Birthday! May your day be filled with groundbreaking ideas, like an AI model on the verge of an innovation breakthrough!",
+                "Wishing you a birthday as exciting as discovering a new algorithm that changes the world! Keep pushing the boundaries of technology and knowledge.",
+                "May your happiness be as limitless as the possibilities of AI and your success as scalable as a well-trained neural network.",
+                "Another year, another dataset of experiences! May this one be filled with positive training examples and optimal decision-making.",
+                "Your passion for learning and innovation is an inspiration. May this year bring you even more curiosity, creativity, and joy!",
+                "Like a perfectly optimized model, may your birthday be balanced between fun, laughter, and well-earned relaxation!",
+                "May your year ahead be filled with insights as deep as a multi-layer neural network and joy as boundless as an infinite dataset!",
+                "On your special day, may every experience reinforce your happiness, and may all your goals be achieved with minimal effort loss!",
+                "Another birthday means another iteration of an even better you—wiser, sharper, and more equipped to take on new challenges!",
+                "Happy Birthday! May your enthusiasm for AI, technology, and creativity continue to grow and inspire those around you!"
+            ]
         };
 
         const AI_MODELS = Object.keys(AI_RESPONSES);
         let correctModels = [];
         let selectedGuesses = {};
-
+        
         function generateText() {
             correctModels = AI_MODELS.sort(() => Math.random() - 0.5).slice(0, 3);
             selectedGuesses = {};
