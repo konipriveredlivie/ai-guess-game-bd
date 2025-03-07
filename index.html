@@ -11,17 +11,19 @@
         .button-primary { background-color: #007bff; color: white; }
         .button-outline { background-color: white; border: 1px solid #007bff; color: #007bff; }
         .selected { background-color: #0056b3; color: white; }
-        .confetti { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://media.giphy.com/media/3o6ZsYwrD3XyYyApna/giphy.gif') center/cover no-repeat; }
-        .reaction-gif { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: auto; }
+        .confetti { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: auto; }d
+        .reaction-gif { display: none; position: absolute; width: 200px; height: auto; }
+        #wrongGif { top: 10px; left: 50%; transform: translateX(-50%); }
+        #rightGif { top: 50%; right: 10px; transform: translateY(-50%); }
     </style>
 </head>
 <body>
     <h1>AI Model Guessing Game</h1>
-    <button class="button button-primary" onclick="generateText()">Generate Text</button>
+    <button id="generateBtn" class="button button-primary" onclick="generateText()">Generate Text</button>
     <div id="responses"></div>
-    <button class="button button-primary" onclick="showAnswers()">Check Answers</button>
+    <button id="checkBtn" class="button button-primary" onclick="showAnswers()">Check Answers</button>
     <div id="answers" style="display:none;"></div>
-    <div id="confetti" class="confetti"></div>
+    <img id="confetti" class="confetti" src="/mnt/data/image.png" alt="Confetti">
     <img id="wrongGif" class="reaction-gif" src="/mnt/data/9mlpns.gif" alt="Wrong Answer Reaction">
     <img id="rightGif" class="reaction-gif" src="/mnt/data/MicrosoftTeams-video.gif" alt="Correct Answer Reaction">
 
@@ -53,6 +55,9 @@
             selectedGuesses = {};
             document.getElementById("wrongGif").style.display = "none";
             document.getElementById("rightGif").style.display = "none";
+            document.getElementById("confetti").style.display = "none";
+            document.getElementById("generateBtn").disabled = false;
+            document.getElementById("checkBtn").disabled = false;
             const responsesDiv = document.getElementById("responses");
             responsesDiv.innerHTML = "";
             
@@ -89,6 +94,8 @@
         }
 
         function showAnswers() {
+            document.getElementById("generateBtn").disabled = true;
+            document.getElementById("checkBtn").disabled = true;
             let answersDiv = document.getElementById("answers");
             answersDiv.style.display = "block";
             answersDiv.innerHTML = "<h2>Correct Answers</h2>";
@@ -104,16 +111,17 @@
             if (correctCount === 3) {
                 document.getElementById("confetti").style.display = "block";
                 document.getElementById("rightGif").style.display = "block";
-                setTimeout(() => {
-                    document.getElementById("confetti").style.display = "none";
-                    document.getElementById("rightGif").style.display = "none";
-                }, 3000);
-            } else if (correctCount < 3) {
+            } else {
                 document.getElementById("wrongGif").style.display = "block";
-                setTimeout(() => {
-                    document.getElementById("wrongGif").style.display = "none";
-                }, 3000);
             }
+            
+            setTimeout(() => {
+                document.getElementById("confetti").style.display = "none";
+                document.getElementById("rightGif").style.display = "none";
+                document.getElementById("wrongGif").style.display = "none";
+                document.getElementById("generateBtn").disabled = false;
+                document.getElementById("checkBtn").disabled = false;
+            }, 5000);
         }
     </script>
 </body>
