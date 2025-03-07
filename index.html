@@ -24,16 +24,33 @@
         let correctModels = [];
         let selectedGuesses = {};
 
-        function generateText() {
-            const texts = [
-                "Happy Birthday! You're an AI enthusiast, and it's inspiring to see how you embrace technology. Whether you're coding in Python, experimenting with prompt engineering, or diving into contemporary art, your passion for learning is truly remarkable. Wishing you a fantastic day filled with creativity and new discoveries!",
-                "Wishing you a fantastic birthday! May your happiness algorithm always be optimized for joy, and your life's neural network continue to learn and evolve. Another year, another step closer to AGI-level wisdom!",
-                "Happy 55th! Another year of coding, experimenting, and mastering AI models ahead! Your curiosity knows no bounds, and I hope this year brings you endless innovation, great art, and a perfectly trained reward model for happiness!"
-            ];
+        async function fetchAIResponse(model) {
+            const apiKey = "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"; // Replace with your actual OpenAI API key
+            const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [{ role: "system", content: "Generate a heartfelt and AI-themed birthday message for a father who loves AI, Python, and contemporary art." }],
+                    max_tokens: 100
+                })
+            });
+            const data = await response.json();
+            return data.choices[0].message.content;
+        }
+
+        async function generateText() {
             correctModels = AI_MODELS.sort(() => Math.random() - 0.5).slice(0, 3);
             selectedGuesses = {};
             const responsesDiv = document.getElementById("responses");
+            responsesDiv.innerHTML = "<p>Generating responses... Please wait.</p>";
+            
+            let texts = await Promise.all(correctModels.map(model => fetchAIResponse(model)));
             responsesDiv.innerHTML = "";
+            
             texts.forEach((text, index) => {
                 let card = document.createElement("div");
                 card.className = "response-card";
