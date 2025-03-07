@@ -20,46 +20,61 @@
     <div id="answers" style="display:none;"></div>
 
     <script>
-        const AI_MODELS = ["GPT-4o", "GPT-4-turbo", "GPT-4-turbo mini", "Claude-3", "Gemini Pro", "Mistral-7B"];
+        const AI_RESPONSES = {
+            "GPT-4o": [
+                "Happy Birthday! Hope your Python scripts run error-free today!",
+                "Wishing you a birthday as optimized as a well-tuned machine learning model!",
+                "May your day be filled with joy and perfectly structured prompts!"
+            ],
+            "GPT-4-turbo": [
+                "Another year of wisdom, just like a well-trained neural network!",
+                "Your enthusiasm for AI is truly inspiring – have a fantastic day!",
+                "Enjoy your birthday and keep iterating on greatness!"
+            ],
+            "GPT-4-turbo mini": [
+                "Happy Birthday! Debugging life, one year at a time!",
+                "Another year added to your training dataset – keep learning!",
+                "Wishing you a day filled with creativity, code, and celebration!"
+            ],
+            "Claude-3": [
+                "May your birthday be filled with artistic inspiration and AI breakthroughs!",
+                "Wishing you a day as insightful as a perfectly tuned language model!",
+                "Hope your day is filled with creativity and exploration!"
+            ],
+            "Gemini Pro": [
+                "Happy Birthday! Time to optimize for joy and excitement!",
+                "Wishing you a day filled with great discoveries and infinite possibilities!",
+                "Celebrate today like a well-trained model reaching peak performance!"
+            ],
+            "Mistral-7B": [
+                "May your day be filled with artistic expression and AI magic!",
+                "Another year of processing knowledge and fine-tuning wisdom!",
+                "Wishing you a birthday filled with innovation and happiness!"
+            ]
+        };
+
+        const AI_MODELS = Object.keys(AI_RESPONSES);
         let correctModels = [];
         let selectedGuesses = {};
 
-        async function fetchAIResponse(model) {
-            const apiKey = "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"; // Replace with your actual OpenAI API key
-            const response = await fetch("https://api.openai.com/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${apiKey}`
-                },
-                body: JSON.stringify({
-                    model: model,
-                    messages: [{ role: "system", content: "Generate a heartfelt and AI-themed birthday message for a father who loves AI, Python, and contemporary art." }],
-                    max_tokens: 100
-                })
-            });
-            const data = await response.json();
-            return data.choices[0].message.content;
-        }
-
-        async function generateText() {
+        function generateText() {
             correctModels = AI_MODELS.sort(() => Math.random() - 0.5).slice(0, 3);
             selectedGuesses = {};
             const responsesDiv = document.getElementById("responses");
-            responsesDiv.innerHTML = "<p>Generating responses... Please wait.</p>";
-            
-            let texts = await Promise.all(correctModels.map(model => fetchAIResponse(model)));
             responsesDiv.innerHTML = "";
             
-            texts.forEach((text, index) => {
+            correctModels.forEach((model, index) => {
+                const responsePool = AI_RESPONSES[model];
+                const randomResponse = responsePool[Math.floor(Math.random() * responsePool.length)];
+                
                 let card = document.createElement("div");
                 card.className = "response-card";
-                card.innerHTML = `<p>${text}</p>`;
-                AI_MODELS.forEach(model => {
+                card.innerHTML = `<p>${randomResponse}</p>`;
+                AI_MODELS.forEach(choice => {
                     let button = document.createElement("button");
                     button.className = "button button-outline";
-                    button.innerText = model;
-                    button.onclick = () => selectedGuesses[index] = model;
+                    button.innerText = choice;
+                    button.onclick = () => selectedGuesses[index] = choice;
                     card.appendChild(button);
                 });
                 responsesDiv.appendChild(card);
