@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model Guessing Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .response-card { border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px; }
+        .button { padding: 10px 15px; margin: 5px; cursor: pointer; border: none; border-radius: 5px; }
+        .button-primary { background-color: #007bff; color: white; }
+        .button-outline { background-color: white; border: 1px solid #007bff; color: #007bff; }
+    </style>
+</head>
+<body>
+    <h1>AI Model Guessing Game</h1>
+    <button class="button button-primary" onclick="generateText()">Generate Text</button>
+    <div id="responses"></div>
+    <button class="button button-primary" onclick="showAnswers()">Check Answers</button>
+    <div id="answers" style="display:none;"></div>
+
+    <script>
+        const AI_MODELS = ["GPT-4o", "GPT-4-turbo", "GPT-4-turbo mini", "Claude-3", "Gemini Pro", "Mistral-7B"];
+        let correctModels = [];
+        let selectedGuesses = {};
+
+        function generateText() {
+            const texts = [
+                "Happy Birthday! You're an AI enthusiast, and it's inspiring to see how you embrace technology. Whether you're coding in Python, experimenting with prompt engineering, or diving into contemporary art, your passion for learning is truly remarkable. Wishing you a fantastic day filled with creativity and new discoveries!",
+                "Wishing you a fantastic birthday! May your happiness algorithm always be optimized for joy, and your life's neural network continue to learn and evolve. Another year, another step closer to AGI-level wisdom!",
+                "Happy 55th! Another year of coding, experimenting, and mastering AI models ahead! Your curiosity knows no bounds, and I hope this year brings you endless innovation, great art, and a perfectly trained reward model for happiness!"
+            ];
+            correctModels = AI_MODELS.sort(() => Math.random() - 0.5).slice(0, 3);
+            selectedGuesses = {};
+            const responsesDiv = document.getElementById("responses");
+            responsesDiv.innerHTML = "";
+            texts.forEach((text, index) => {
+                let card = document.createElement("div");
+                card.className = "response-card";
+                card.innerHTML = `<p>${text}</p>`;
+                AI_MODELS.forEach(model => {
+                    let button = document.createElement("button");
+                    button.className = "button button-outline";
+                    button.innerText = model;
+                    button.onclick = () => selectedGuesses[index] = model;
+                    card.appendChild(button);
+                });
+                responsesDiv.appendChild(card);
+            });
+            document.getElementById("answers").style.display = "none";
+        }
+
+        function showAnswers() {
+            let answersDiv = document.getElementById("answers");
+            answersDiv.style.display = "block";
+            answersDiv.innerHTML = "<h2>Correct Answers</h2>";
+            correctModels.forEach((model, index) => {
+                let result = document.createElement("p");
+                result.innerText = `Response ${index + 1}: ${model} (Your guess: ${selectedGuesses[index] || 'None'})`;
+                result.style.color = selectedGuesses[index] === model ? "green" : "red";
+                answersDiv.appendChild(result);
+            });
+        }
+    </script>
+</body>
+</html>
