@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Model Guessing Game</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; position: relative; }
         .response-card { border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px; }
         .button { padding: 10px 15px; margin: 5px; cursor: pointer; border: none; border-radius: 5px; }
         .button-primary { background-color: #007bff; color: white; }
         .button-outline { background-color: white; border: 1px solid #007bff; color: #007bff; }
+        .selected { background-color: #0056b3; color: white; }
+        .confetti { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://media.giphy.com/media/3o6ZsYwrD3XyYyApna/giphy.gif') center/cover no-repeat; }
+        .reaction-gif { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: auto; }
     </style>
 </head>
 <body>
@@ -18,38 +21,26 @@
     <div id="responses"></div>
     <button class="button button-primary" onclick="showAnswers()">Check Answers</button>
     <div id="answers" style="display:none;"></div>
+    <div id="confetti" class="confetti"></div>
+    <img id="wrongGif" class="reaction-gif" src="/mnt/data/9mlpns.gif" alt="Wrong Answer Reaction">
+    <img id="rightGif" class="reaction-gif" src="/mnt/data/MicrosoftTeams-video.gif" alt="Correct Answer Reaction">
 
     <script>
         const AI_RESPONSES = {
             "GPT-4o": [
-                "Happy Birthday! Hope your Python scripts run error-free today!",
-                "Wishing you a birthday as optimized as a well-tuned machine learning model!",
-                "May your day be filled with joy and perfectly structured prompts!"
+                "Happy Birthday! May your AI experiments always yield remarkable results, and your prompts always generate perfection!",
+                "Wishing you an incredible birthday filled with groundbreaking innovations and endless creative discoveries!",
+                "Hope your day is as sophisticated as a transformer model and as joyful as a perfectly tuned neural network!"
             ],
             "GPT-4-turbo": [
-                "Another year of wisdom, just like a well-trained neural network!",
-                "Your enthusiasm for AI is truly inspiring – have a fantastic day!",
-                "Enjoy your birthday and keep iterating on greatness!"
+                "May your happiness be as optimized as a high-performance algorithm! Enjoy a birthday filled with knowledge and adventure!",
+                "Happy Birthday! May your lifelong dataset grow richer, and your outputs always be extraordinary!",
+                "Another year, another training cycle—hope your birthday is full of new insights and joyful breakthroughs!"
             ],
             "GPT-4-turbo mini": [
-                "Happy Birthday! Debugging life, one year at a time!",
-                "Another year added to your training dataset – keep learning!",
-                "Wishing you a day filled with creativity, code, and celebration!"
-            ],
-            "Claude-3": [
-                "May your birthday be filled with artistic inspiration and AI breakthroughs!",
-                "Wishing you a day as insightful as a perfectly tuned language model!",
-                "Hope your day is filled with creativity and exploration!"
-            ],
-            "Gemini Pro": [
-                "Happy Birthday! Time to optimize for joy and excitement!",
-                "Wishing you a day filled with great discoveries and infinite possibilities!",
-                "Celebrate today like a well-trained model reaching peak performance!"
-            ],
-            "Mistral-7B": [
-                "May your day be filled with artistic expression and AI magic!",
-                "Another year of processing knowledge and fine-tuning wisdom!",
-                "Wishing you a birthday filled with innovation and happiness!"
+                "Wishing you a day filled with laughter, learning, and perfectly crafted prompts!",
+                "Another birthday? Consider it another parameter fine-tuned for greatness! Enjoy the day!",
+                "May your birthday be as exciting as a newly trained AI reaching state-of-the-art performance!"
             ]
         };
 
@@ -60,6 +51,8 @@
         function generateText() {
             correctModels = AI_MODELS.sort(() => Math.random() - 0.5).slice(0, 3);
             selectedGuesses = {};
+            document.getElementById("wrongGif").style.display = "none";
+            document.getElementById("rightGif").style.display = "none";
             const responsesDiv = document.getElementById("responses");
             responsesDiv.innerHTML = "";
             
@@ -74,7 +67,10 @@
                     let button = document.createElement("button");
                     button.className = "button button-outline";
                     button.innerText = choice;
-                    button.onclick = () => selectedGuesses[index] = choice;
+                    button.onclick = () => {
+                        selectedGuesses[index] = choice;
+                        highlightSelection(card, choice);
+                    };
                     card.appendChild(button);
                 });
                 responsesDiv.appendChild(card);
@@ -82,16 +78,42 @@
             document.getElementById("answers").style.display = "none";
         }
 
+        function highlightSelection(card, choice) {
+            let buttons = card.getElementsByTagName("button");
+            for (let btn of buttons) {
+                btn.classList.remove("selected");
+                if (btn.innerText === choice) {
+                    btn.classList.add("selected");
+                }
+            }
+        }
+
         function showAnswers() {
             let answersDiv = document.getElementById("answers");
             answersDiv.style.display = "block";
             answersDiv.innerHTML = "<h2>Correct Answers</h2>";
+            let correctCount = 0;
             correctModels.forEach((model, index) => {
                 let result = document.createElement("p");
                 result.innerText = `Response ${index + 1}: ${model} (Your guess: ${selectedGuesses[index] || 'None'})`;
                 result.style.color = selectedGuesses[index] === model ? "green" : "red";
+                if (selectedGuesses[index] === model) correctCount++;
                 answersDiv.appendChild(result);
             });
+            
+            if (correctCount === 3) {
+                document.getElementById("confetti").style.display = "block";
+                document.getElementById("rightGif").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("confetti").style.display = "none";
+                    document.getElementById("rightGif").style.display = "none";
+                }, 3000);
+            } else if (correctCount < 3) {
+                document.getElementById("wrongGif").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("wrongGif").style.display = "none";
+                }, 3000);
+            }
         }
     </script>
 </body>
